@@ -1,0 +1,7 @@
+/target
+/test_data
+/tests
+.env*
+.git
+.idea
+
