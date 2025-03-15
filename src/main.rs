@@ -1,8 +1,8 @@
-
 // use anyhow::Result;
 use chrono::{DateTime, Datelike, Local};
 use open_meteo_rs::forecast::ForecastResult;
 use serde_json::json;
+use std::env;
 // use clap::Parser;
 // aa
 // #[derive(Parser)]
@@ -14,9 +14,17 @@ use serde_json::json;
 
 mod my;
 
+static mut test_rain: bool = false;
+
 #[tokio::main]
 async fn main() {
     dotenv::dotenv().ok();
+    let args: Vec<String> = env::args().collect();
+    if args.len() > 1 {
+        if args[1] == "test-rain" {
+            unsafe { test_rain = true }
+        }
+    }
     main1().await;
     // send_alert().await;
 }
@@ -27,8 +35,17 @@ async fn main1() {
     let current_time: DateTime<Local> = Local::now();
     println!("Weather Alert Service");
     println!("Current time: {}", current_time);
+    println!("alert url: {}", std::env::var("ALERT_URL").unwrap());
     println!("{}", get_next_day());
     // println!("Location: {}", location);
+
+    unsafe {
+        if test_rain {
+            println!("test_rain");
+            send_alert().await;
+            return;
+        }
+    }
 
     let mut res = request_weather_data().await;
     // if let Some(hourly) = res.hourly {

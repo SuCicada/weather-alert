@@ -6,10 +6,12 @@ pub async fn my() {
     let mut opts = open_meteo_rs::forecast::Options::default();
 
     // Location
-    opts.location = open_meteo_rs::Location {
-        lat: 48.864716,
-        lng: 2.349014,
-    };
+    let lat_lng = "35.5052994,139.67587555555554"; // todo from env
+    let (lat, lng) = lat_lng
+        .split_once(",")
+        .map(|(lat, lng)| (lat.parse::<f64>().unwrap(), lng.parse::<f64>().unwrap()))
+        .unwrap();
+    opts.location = open_meteo_rs::Location { lat, lng };
 
     // Elevation
     opts.elevation = Some(open_meteo_rs::forecast::Elevation::Nan); // or
