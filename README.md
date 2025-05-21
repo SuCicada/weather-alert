@@ -25,5 +25,5 @@ MIT
 
 ## run
 ```bash
-docker run sucicada/weather-alert:latest
+docker run -e ALERT_URL=http://apprise.xxxxx/notify/test -e LOCATION=1,1 --rm sucicada/weather-alert:latest
 ```

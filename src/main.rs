@@ -36,6 +36,7 @@ async fn main1() {
     println!("Weather Alert Service");
     println!("Current time: {}", current_time);
     println!("alert url: {}", std::env::var("ALERT_URL").unwrap());
+    println!("location: {}", std::env::var("LOCATION").unwrap());
     println!("{}", get_next_day());
     // println!("Location: {}", location);
 
@@ -91,10 +92,12 @@ async fn request_weather_data() -> ForecastResult {
     // let url = format!("https://api.open-meteo.com/v1/forecast?latitude=35.544701&longitude=139.686797&hourly=precipitation_probability&timezone=Asia%2FTokyo&start=2025-01-16T09%3A00&end=2025-01-16T23%3A00")
     let client = open_meteo_rs::Client::new();
     let mut opts = open_meteo_rs::forecast::Options::default();
-    opts.location = open_meteo_rs::Location {
-        lat: 35.544701,
-        lng: 139.686797,
-    };
+    let lat_lng = std::env::var("LOCATION").unwrap();
+    let (lat, lng) = lat_lng
+        .split_once(",")
+        .map(|(lat, lng)| (lat.parse::<f64>().unwrap(), lng.parse::<f64>().unwrap()))
+        .unwrap();
+    opts.location = open_meteo_rs::Location { lat, lng };
     let nextday = get_next_day().date_naive();
     // opts.hourly.push("precipitation".into());
     // opts.hourly.push("rain".into());
