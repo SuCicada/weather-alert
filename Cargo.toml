@@ -6,6 +6,7 @@ edition = "2021"
 [dependencies]
 chrono = "0.4.39"
 chrono-tz = "0.10.0"
+clap = { version = "4.5.47", features = ["derive"] }
 dotenv = "0.15.0"
 open-meteo-rs = "0.0.4"
 reqwest = { version = "0.12.12", features = ["json", "native-tls-vendored"] }
