@@ -22,4 +22,4 @@ WORKDIR /root
 RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
 COPY --from=builder /root/target/release/weather-alert .
 #ENV LOG=info,warn,error
-CMD ["./weather-alert"]
+ENTRYPOINT ["./weather-alert"]
